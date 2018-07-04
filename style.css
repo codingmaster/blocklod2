@@ -9,6 +9,11 @@ body {
     border: 0;
     margin: 0 0 80px; /* bottom = footer height */
 }
+
+.section{
+    padding: 40px;
+}
+
 .container {
     display: block;
     position: relative;

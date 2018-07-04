@@ -1,3 +1,6 @@
+var token;
+var transaction;
+
 var executeAjax = function (type, url, data, success) {
     $.ajax({
         type: type,
@@ -19,20 +22,40 @@ $(document).ready(function () {
         var username = $('#username').val();
         var password = $('#password').val();
         var success = function(result){
+            token = result.token;
             $("#tokenResult").text(JSON.stringify(result));
-            $("#createStoreToken").val(result.token);
+            $(".token").val(token);
+
         };
         executeAjax('POST', 'https://blockchain7.kmi.open.ac.uk/rdf/users/signin', {username: username, password: password}, success);
     });
 
     $('#createStore').submit(function (e) {
         e.preventDefault();
-        var token = $('#createStoreToken').val();
-
         var success = function(result){
             $("#transactionResult").text(JSON.stringify(result));
+            transaction = result.transaction;
+            $('.transaction').val(transaction);
         };
         executeAjax('POST', 'https://blockchain7.kmi.open.ac.uk/rdf/store/create', {token: token}, success);
+    });
+
+    $('#registerStore').submit(function (e) {
+        e.preventDefault();
+
+        var success = function(result){
+            $("#registerStoreResult").text(JSON.stringify(result));
+        };
+        executeAjax('POST', 'https://blockchain7.kmi.open.ac.uk/rdf/store/register', {token: token, transaction: transaction}, success);
+    });
+
+    $('#showStores').submit(function (e) {
+        e.preventDefault();
+
+        var success = function(result){
+            $("#showStoreResult").text(JSON.stringify(result));
+        };
+        executeAjax('POST', 'https://blockchain7.kmi.open.ac.uk/rdf/store/list', {token: token}, success);
     });
 
 });
